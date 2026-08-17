@@ -14,11 +14,10 @@
   <style>
     .demo-lang-select:hover { border-color: #d7dbe7 !important; background-color: #fff !important; }
     .demo-lang-select:focus { outline: none; border-color: #356dff !important; box-shadow: 0 0 0 2px rgba(53,109,255,.12); }
-    #lang-modal, #feed-modal { display: none; }
-    #lang-modal.open, #feed-modal.open { display: block; }
+    #lang-modal { display: none; }
+    #lang-modal.open { display: block; }
     #demo-toast { display:none; position:fixed; bottom:24px; left:50%; transform:translateX(-50%); z-index:1100; padding:10px 16px; background:#242833; color:#fff; border-radius:8px; font-size:14px; box-shadow:0 4px 12px rgba(0,0,0,.15); }
     #demo-toast.show { display:block; }
-    .demo-feed-disabled { opacity: 0.55; pointer-events: none; }
     .demo-suggest-tag { display: inline-block; margin-left: 6px; padding: 0 6px; font-size: 11px; line-height: 18px; color: #356dff; background: #f0f7ff; border: 1px solid #b0d6ff; border-radius: 4px; vertical-align: middle; }
     .demo-langs { margin-top: 4px; }
     .demo-lang-row { display: flex; align-items: center; justify-content: space-between; padding: 10px 12px; background: #fff; border: 1px solid #eaedf1; border-radius: 8px; margin-bottom: 8px; }
@@ -44,17 +43,21 @@
     .demo-lang-quota-tip { font-size: 12px; line-height: 18px; color: #d48806; }
     .demo-lang-name-line { display: flex; align-items: center; }
     .demo-lang-row .ant-switch-disabled { opacity: 0.45; cursor: not-allowed; pointer-events: none; }
-    html:not(.is-unlocked) #root { display: none !important; }
+  </style>
+<style>
+html:not(.is-unlocked) body > *:not(#demo-gate) { display: none !important; }
     #demo-gate { position: fixed; inset: 0; z-index: 4000; display: flex; align-items: center; justify-content: center; background: #f5f6f8; }
     html.is-unlocked #demo-gate { display: none; }
-    .demo-gate-card { width: 400px; max-width: calc(100vw - 32px); background: #fff; border: 1px solid #eaedf1; border-radius: 12px; padding: 28px 24px 24px; box-shadow: 0 8px 24px rgba(36,40,51,.08); }
+    .demo-gate-card { width: 400px; max-width: calc(100vw - 32px); background: #fff; border: 1px solid #eaedf1; border-radius: 12px; padding: 28px 24px 24px; box-shadow: 0 8px 24px rgba(36,40,51,.08); font-family: ui-sans-serif, system-ui, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif; }
     .demo-gate-card h1 { margin: 0 0 8px; font-size: 18px; font-weight: 600; color: #242833; }
     .demo-gate-card p { margin: 0 0 16px; font-size: 13px; line-height: 20px; color: #62708d; }
     .demo-gate-card input { width: 100%; height: 36px; padding: 0 12px; border: 1px solid #d7dbe7; border-radius: 8px; font-size: 14px; color: #242833; box-sizing: border-box; }
     .demo-gate-card input:focus { outline: none; border-color: #356dff; box-shadow: 0 0 0 2px rgba(53,109,255,.12); }
     .demo-gate-actions { display: flex; justify-content: flex-end; margin-top: 16px; }
     .demo-gate-error { margin: 8px 0 0; font-size: 12px; color: #d4380d; min-height: 18px; }
-  </style>
+    .demo-gate-actions button { height: 36px; padding: 0 16px; border: 0; border-radius: 8px; background: #356dff; color: #fff; font-size: 14px; cursor: pointer; }
+</style>
+
   <script>
   (function () {
     const KEY_HASH = "5369f7a0ad77d6c2c037d556d91e730a7b6adc2ad5bc5ef96d6471cd00a606a4";
@@ -92,11 +95,11 @@
 <div id="demo-gate">
   <div class="demo-gate-card">
     <h1>访问受限</h1>
-    <p>请输入访问密钥后查看 Google Feed 多市场 Demo。</p>
+    <p>请输入访问密钥后查看页面。</p>
     <input id="demo-gate-input" type="password" placeholder="访问密钥" autocomplete="current-password">
     <div class="demo-gate-error" id="demo-gate-error"></div>
     <div class="demo-gate-actions">
-      <button type="button" class="ant-btn ant-btn-primary sl-btn" id="demo-gate-submit"><span>进入</span></button>
+      <button type="button" id="demo-gate-submit">进入</button>
     </div>
   </div>
 </div>
@@ -114,7 +117,6 @@
       <div style="font-size: 12px; color: rgb(98, 112, 141);">https://angelostore.top · ID: 6192449487934433</div>
     </div>
   </div>
-  <div><button data-feed-switch data-market="hk" data-on="1" type="button" role="switch" aria-checked="true" class="ant-switch ant-switch-checked"><div class="ant-switch-handle"></div><span class="ant-switch-inner"></span></button></div>
 </div>
 <div><form class="ant-form ant-form-horizontal"><div class="_title_119u7_57 _titleMg_119u7_67">选择商品同步范围<a class="_link_119u7_74">查看已同步商品<svg width="1em" height="1em" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" fill="currentColor" data-icon="SLIconRedirect" style="transform: translateY(2px);"><path d="M17 2.25h-5v1.5h3.19L9.47 9.47l1.06 1.06 5.72-5.72V8h1.5V3a.75.75 0 0 0-.75-.75Z"></path><path d="M15.75 17v-6h-1.5v5.25H3.75V5.75H9v-1.5H3a.75.75 0 0 0-.75.75v12c0 .414.336.75.75.75h12a.75.75 0 0 0 .75-.75Z"></path></svg></a></div><div class="ant-row ant-form-item"><div class="ant-col ant-form-item-control"><div class="ant-form-item-control-input"><div class="ant-form-item-control-input-content"><div class="s-radios-group s-radios-group-horizontal"><div class="s-radios-group-item"><label class="ant-radio-wrapper ant-radio-wrapper-experimental ant-radio-wrapper-checked sl-radio"><span class="ant-radio-rect ant-radio-rect-with-content"><span class="ant-radio ant-radio-checked"><input type="radio" class="ant-radio-input" value="" checked=""><span class="ant-radio-inner"></span></span></span><span class="ant-radio-content"><span><div class="s-internal-ellipsis-node"><div class="s-internal-ellipsis-node-content" data-max-line="2" data-ellipsis-position="end">全部商品</div></div></span></span></label></div><div class="s-radios-group-item"><label class="ant-radio-wrapper ant-radio-wrapper-experimental sl-radio"><span class="ant-radio-rect ant-radio-rect-with-content"><span class="ant-radio"><input type="radio" class="ant-radio-input" value=""><span class="ant-radio-inner"></span></span></span><span class="ant-radio-content"><span><div class="s-internal-ellipsis-node"><div class="s-internal-ellipsis-node-content" data-max-line="2" data-ellipsis-position="end">部分商品</div></div></span></span></label></div></div></div></div></div></div><label class="ant-checkbox-wrapper ant-checkbox-wrapper-experimental sl-checkbox" data-testid="atlas-checkbox" style="margin-top: 0px;"><div class="ant-checkbox-content"><span class="ant-checkbox-rect ant-checkbox-rect-with-content"><span class="ant-checkbox"><input id="firstSku-hk" type="checkbox" class="ant-checkbox-input" value=""><span class="ant-checkbox-inner"></span></span></span><span class="ant-checkbox-content-inner">仅上传第一个款式<svg width="1em" height="1em" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" data-icon="SLIconQuestionCircle" style="font-size: 16px; transform: translateY(3px); margin-left: 3px;"><path d="M10.001 5c-.853 0-1.658.295-2.268.827-.634.555-.983 1.3-.983 2.099v.154c0 .09.073.163.163.163h.975c.09 0 .162-.073.162-.163v-.154c0-.896.876-1.626 1.951-1.626 1.075 0 1.95.73 1.95 1.626 0 .632-.446 1.21-1.14 1.477a2.271 2.271 0 0 0-1.462 2.15v.437c0 .09.073.162.162.162h.976c.089 0 .162-.073.162-.162v-.462a.981.981 0 0 1 .628-.91c1.199-.461 1.973-1.518 1.973-2.692.002-.799-.348-1.544-.981-2.099A3.426 3.426 0 0 0 10 5ZM9.426 14.84a.813.813 0 1 1 1.15-1.15.813.813 0 0 1-1.15 1.15Z" fill="#474F5E"></path><path d="M10 1.25a8.75 8.75 0 1 0 0 17.5 8.75 8.75 0 0 0 0-17.5ZM2.75 10a7.25 7.25 0 1 1 14.5 0 7.25 7.25 0 0 1-14.5 0Z" fill="#474F5E"></path></svg></span></div></label></form><div class="demo-langs" data-langs-for="hk">
   <div class="_title_119u7_57" style="margin: 16px 0 10px;">多种语言</div>
@@ -163,7 +165,6 @@
       <div style="font-size: 12px; color: rgb(98, 112, 141);">https://angelostore.top/fr-eur · ID: 13510798882831580</div>
     </div>
   </div>
-  <div><button data-feed-switch data-market="fr" data-on="1" type="button" role="switch" aria-checked="true" class="ant-switch ant-switch-checked"><div class="ant-switch-handle"></div><span class="ant-switch-inner"></span></button></div>
 </div>
 <div><form class="ant-form ant-form-horizontal"><div class="_title_119u7_57 _titleMg_119u7_67">选择商品同步范围<a class="_link_119u7_74">查看已同步商品<svg width="1em" height="1em" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" fill="currentColor" data-icon="SLIconRedirect" style="transform: translateY(2px);"><path d="M17 2.25h-5v1.5h3.19L9.47 9.47l1.06 1.06 5.72-5.72V8h1.5V3a.75.75 0 0 0-.75-.75Z"></path><path d="M15.75 17v-6h-1.5v5.25H3.75V5.75H9v-1.5H3a.75.75 0 0 0-.75.75v12c0 .414.336.75.75.75h12a.75.75 0 0 0 .75-.75Z"></path></svg></a></div><div class="ant-row ant-form-item"><div class="ant-col ant-form-item-control"><div class="ant-form-item-control-input"><div class="ant-form-item-control-input-content"><div class="s-radios-group s-radios-group-horizontal"><div class="s-radios-group-item"><label class="ant-radio-wrapper ant-radio-wrapper-experimental ant-radio-wrapper-checked sl-radio"><span class="ant-radio-rect ant-radio-rect-with-content"><span class="ant-radio ant-radio-checked"><input type="radio" class="ant-radio-input" value="" checked=""><span class="ant-radio-inner"></span></span></span><span class="ant-radio-content"><span><div class="s-internal-ellipsis-node"><div class="s-internal-ellipsis-node-content" data-max-line="2" data-ellipsis-position="end">全部商品</div></div></span></span></label></div><div class="s-radios-group-item"><label class="ant-radio-wrapper ant-radio-wrapper-experimental sl-radio"><span class="ant-radio-rect ant-radio-rect-with-content"><span class="ant-radio"><input type="radio" class="ant-radio-input" value=""><span class="ant-radio-inner"></span></span></span><span class="ant-radio-content"><span><div class="s-internal-ellipsis-node"><div class="s-internal-ellipsis-node-content" data-max-line="2" data-ellipsis-position="end">部分商品</div></div></span></span></label></div></div></div></div></div></div><label class="ant-checkbox-wrapper ant-checkbox-wrapper-experimental sl-checkbox" data-testid="atlas-checkbox" style="margin-top: 0px;"><div class="ant-checkbox-content"><span class="ant-checkbox-rect ant-checkbox-rect-with-content"><span class="ant-checkbox"><input id="firstSku-fr" type="checkbox" class="ant-checkbox-input" value=""><span class="ant-checkbox-inner"></span></span></span><span class="ant-checkbox-content-inner">仅上传第一个款式<svg width="1em" height="1em" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" data-icon="SLIconQuestionCircle" style="font-size: 16px; transform: translateY(3px); margin-left: 3px;"><path d="M10.001 5c-.853 0-1.658.295-2.268.827-.634.555-.983 1.3-.983 2.099v.154c0 .09.073.163.163.163h.975c.09 0 .162-.073.162-.163v-.154c0-.896.876-1.626 1.951-1.626 1.075 0 1.95.73 1.95 1.626 0 .632-.446 1.21-1.14 1.477a2.271 2.271 0 0 0-1.462 2.15v.437c0 .09.073.162.162.162h.976c.089 0 .162-.073.162-.162v-.462a.981.981 0 0 1 .628-.91c1.199-.461 1.973-1.518 1.973-2.692.002-.799-.348-1.544-.981-2.099A3.426 3.426 0 0 0 10 5ZM9.426 14.84a.813.813 0 1 1 1.15-1.15.813.813 0 0 1-1.15 1.15Z" fill="#474F5E"></path><path d="M10 1.25a8.75 8.75 0 1 0 0 17.5 8.75 8.75 0 0 0 0-17.5ZM2.75 10a7.25 7.25 0 1 1 14.5 0 7.25 7.25 0 0 1-14.5 0Z" fill="#474F5E"></path></svg></span></div></label></form><div class="demo-langs" data-langs-for="fr">
   <div class="_title_119u7_57" style="margin: 16px 0 10px;">多种语言</div>
@@ -200,7 +201,6 @@
       <div style="font-size: 12px; color: rgb(98, 112, 141);">https://angelostore.top/ch</div>
     </div>
   </div>
-  <div><button data-feed-switch data-market="ch" data-on="1" type="button" role="switch" aria-checked="true" class="ant-switch ant-switch-checked"><div class="ant-switch-handle"></div><span class="ant-switch-inner"></span></button></div>
 </div>
 <div><form class="ant-form ant-form-horizontal"><div class="_title_119u7_57 _titleMg_119u7_67">选择商品同步范围<a class="_link_119u7_74">查看已同步商品<svg width="1em" height="1em" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" fill="currentColor" data-icon="SLIconRedirect" style="transform: translateY(2px);"><path d="M17 2.25h-5v1.5h3.19L9.47 9.47l1.06 1.06 5.72-5.72V8h1.5V3a.75.75 0 0 0-.75-.75Z"></path><path d="M15.75 17v-6h-1.5v5.25H3.75V5.75H9v-1.5H3a.75.75 0 0 0-.75.75v12c0 .414.336.75.75.75h12a.75.75 0 0 0 .75-.75Z"></path></svg></a></div><div class="ant-row ant-form-item"><div class="ant-col ant-form-item-control"><div class="ant-form-item-control-input"><div class="ant-form-item-control-input-content"><div class="s-radios-group s-radios-group-horizontal"><div class="s-radios-group-item"><label class="ant-radio-wrapper ant-radio-wrapper-experimental ant-radio-wrapper-checked sl-radio"><span class="ant-radio-rect ant-radio-rect-with-content"><span class="ant-radio ant-radio-checked"><input type="radio" class="ant-radio-input" value="" checked=""><span class="ant-radio-inner"></span></span></span><span class="ant-radio-content"><span><div class="s-internal-ellipsis-node"><div class="s-internal-ellipsis-node-content" data-max-line="2" data-ellipsis-position="end">全部商品</div></div></span></span></label></div><div class="s-radios-group-item"><label class="ant-radio-wrapper ant-radio-wrapper-experimental sl-radio"><span class="ant-radio-rect ant-radio-rect-with-content"><span class="ant-radio"><input type="radio" class="ant-radio-input" value=""><span class="ant-radio-inner"></span></span></span><span class="ant-radio-content"><span><div class="s-internal-ellipsis-node"><div class="s-internal-ellipsis-node-content" data-max-line="2" data-ellipsis-position="end">部分商品</div></div></span></span></label></div></div></div></div></div></div><label class="ant-checkbox-wrapper ant-checkbox-wrapper-experimental sl-checkbox" data-testid="atlas-checkbox" style="margin-top: 0px;"><div class="ant-checkbox-content"><span class="ant-checkbox-rect ant-checkbox-rect-with-content"><span class="ant-checkbox"><input id="firstSku-ch" type="checkbox" class="ant-checkbox-input" value=""><span class="ant-checkbox-inner"></span></span></span><span class="ant-checkbox-content-inner">仅上传第一个款式<svg width="1em" height="1em" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" data-icon="SLIconQuestionCircle" style="font-size: 16px; transform: translateY(3px); margin-left: 3px;"><path d="M10.001 5c-.853 0-1.658.295-2.268.827-.634.555-.983 1.3-.983 2.099v.154c0 .09.073.163.163.163h.975c.09 0 .162-.073.162-.163v-.154c0-.896.876-1.626 1.951-1.626 1.075 0 1.95.73 1.95 1.626 0 .632-.446 1.21-1.14 1.477a2.271 2.271 0 0 0-1.462 2.15v.437c0 .09.073.162.162.162h.976c.089 0 .162-.073.162-.162v-.462a.981.981 0 0 1 .628-.91c1.199-.461 1.973-1.518 1.973-2.692.002-.799-.348-1.544-.981-2.099A3.426 3.426 0 0 0 10 5ZM9.426 14.84a.813.813 0 1 1 1.15-1.15.813.813 0 0 1-1.15 1.15Z" fill="#474F5E"></path><path d="M10 1.25a8.75 8.75 0 1 0 0 17.5 8.75 8.75 0 0 0 0-17.5ZM2.75 10a7.25 7.25 0 1 1 14.5 0 7.25 7.25 0 0 1-14.5 0Z" fill="#474F5E"></path></svg></span></div></label></form><div class="demo-langs" data-langs-for="ch">
   <div class="_title_119u7_57" style="margin: 16px 0 10px;">多种语言</div>
@@ -254,36 +254,13 @@
     </div>
   </div>
 </div>
-<div id="feed-modal">
-  <div class="ant-modal-root">
-    <div class="ant-modal-mask"></div>
-    <div tabindex="-1" class="ant-modal-wrap" role="dialog">
-      <div role="document" class="ant-modal css-1pi45l5" style="width: 480px;">
-        <div class="ant-modal-content">
-          <button type="button" aria-label="Close" class="ant-modal-close" id="feed-modal-close-x">
-            <span class="ant-modal-close-x"><span role="img" class="anticon anticon-close ant-modal-close-icon"><svg viewBox="64 64 896 896" focusable="false" width="1em" height="1em" fill="currentColor"><path d="M563.8 512l262.5-312.9c4.7-5.6 3.8-14-.9-18.5-5.1-4.3-12.7-3.7-17 1.3L512 460.9 249.5 181.4c-4.3-5-11.9-5.6-17-1.3-4.7 4.9-5.6 13.1-.9 18.5L460.9 512 198.4 824.9c-4.7 5.6-3.8 14 .9 18.5 5.1 4.3 12.7 3.7 17-1.3L512 563.1l262.5 312.9c4.3 5 11.9 5.6 17 1.3 4.7-4.9 5.6-13.1.9-18.5L563.8 512z"></path></svg></span></span>
-          </button>
-          <div class="ant-modal-header"><div class="ant-modal-title">关闭 Feed</div></div>
-          <div class="ant-modal-body"><p id="feed-modal-desc" style="margin:0;line-height:22px;color:#474f5e;"></p></div>
-          <div class="ant-modal-footer">
-            <button type="button" class="ant-btn ant-btn-default sl-btn" id="feed-btn-cancel"><span>取消</span></button>
-            <button type="button" class="ant-btn ant-btn-primary sl-btn" id="feed-btn-confirm"><span>确认继续</span></button>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
 <div id="demo-toast"></div>
 <script>
 const LANG_LABELS = { en: "英语 (en)", fr: "法语 (fr)", de: "德语 (de)", jp: "日语 (jp)", "zh-hk": "繁体中文 (zh-hk)" };
 const COUNTRY_NAMES = { hk: "香港特别行政区", fr: "法国", ch: "瑞士" };
 const pending = { btn: null, market: null, lang: null };
-const pendingFeed = { btn: null, market: null };
 const modal = document.getElementById("lang-modal");
 const modalDesc = document.getElementById("modal-desc");
-const feedModal = document.getElementById("feed-modal");
-const feedModalDesc = document.getElementById("feed-modal-desc");
 const toast = document.getElementById("demo-toast");
 
 function showToast(msg) {
@@ -391,50 +368,8 @@ document.getElementById("btn-delete").onclick = () => {
   closeModal(false);
 };
 document.querySelectorAll(".demo-langs").forEach(layoutLangs);
-
-function feedBody(btn) {
-  return btn.closest("[data-country]")?.querySelector("form")?.parentElement;
-}
-function setFeedSwitch(btn, on) {
-  btn.dataset.on = on ? "1" : "0";
-  btn.setAttribute("aria-checked", on ? "true" : "false");
-  btn.classList.toggle("ant-switch-checked", on);
-  feedBody(btn)?.classList.toggle("demo-feed-disabled", !on);
-}
-function openFeedOffModal(btn) {
-  pendingFeed.btn = btn;
-  pendingFeed.market = btn.dataset.market;
-  const country = COUNTRY_NAMES[pendingFeed.market] || pendingFeed.market;
-  feedModalDesc.innerHTML =
-    `即将关闭 <strong>${country}</strong> 的 Feed。<br><br>` +
-    `关闭 Feed 会停止更新商品，并且把这个 Feed 的商品从 GMC 删除，确认继续吗？`;
-  feedModal.classList.add("open");
-}
-function closeFeedModal() {
-  feedModal.classList.remove("open");
-  pendingFeed.btn = pendingFeed.market = null;
-}
-document.querySelectorAll("[data-feed-switch]").forEach((btn) => {
-  btn.addEventListener("click", (e) => {
-    e.preventDefault();
-    e.stopPropagation();
-    if (btn.dataset.on === "1") openFeedOffModal(btn);
-    else {
-      setFeedSwitch(btn, true);
-      const country = COUNTRY_NAMES[btn.dataset.market] || btn.dataset.market;
-      showToast(`已重新开启 ${country} 的 Feed`);
-    }
-  });
-});
-document.getElementById("feed-btn-cancel").onclick = closeFeedModal;
-document.getElementById("feed-modal-close-x").onclick = closeFeedModal;
-document.querySelector("#feed-modal .ant-modal-mask").onclick = closeFeedModal;
-document.getElementById("feed-btn-confirm").onclick = () => {
-  setFeedSwitch(pendingFeed.btn, false);
-  const country = COUNTRY_NAMES[pendingFeed.market] || pendingFeed.market;
-  showToast(`已关闭 ${country} 的 Feed，已停止更新并从 GMC 删除对应商品`);
-  closeFeedModal();
-};
+</script>
+<script>
 (function bindGate() {
   const input = document.getElementById("demo-gate-input");
   const err = document.getElementById("demo-gate-error");
